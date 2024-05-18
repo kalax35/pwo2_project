@@ -5,4 +5,5 @@ namespace PWO.API.Models
     public class PWOUser : IdentityUser
     {
     }
+
 }

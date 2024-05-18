@@ -12,6 +12,7 @@ namespace PWO.API.Endpoints
     {
         public static void RegisterEndpoints(ref WebApplication app)
         {
+            //Get todolists
             app.MapGet("/todolists", async (HttpContext httpContext, AppDbContext db) =>
             {
                 var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

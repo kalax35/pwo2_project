@@ -32,6 +32,24 @@ namespace PWO.API.Endpoints
                     ToDoListId = inputItem.ToDoListId,
                 };
 
+                var sharedUsers = await db.ToDoListShares
+                               .Where(x => x.ToDoListId == inputItem.ToDoListId)
+                               .Select(x => x.UserId)
+                               .ToListAsync();
+
+                foreach (var sharedUserId in sharedUsers)
+                {
+                    if (sharedUserId != userId)
+                    {
+                        var notification = new Notification
+                        {
+                            UserId = sharedUserId,
+                            Message = $"Nowy element został dodany do listy zadań."
+                        };
+                        db.Notifications.Add(notification);
+                    }
+                }
+
                 db.ToDoListItems.Add(item);
                 await db.SaveChangesAsync();
                 return Results.Created($"/todoitems/{item.Id}", item);

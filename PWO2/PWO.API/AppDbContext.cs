@@ -12,5 +12,6 @@ namespace PWO.API
         public DbSet<ToDoList> ToDoLists { get; set; }
         public DbSet<ToDoListItem> ToDoListItems { get; set; }
         public DbSet<ToDoListShare> ToDoListShares { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }
