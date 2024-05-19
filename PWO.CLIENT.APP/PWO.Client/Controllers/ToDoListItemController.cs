@@ -84,7 +84,7 @@ namespace PWO.Client.Controllers
 
         public async Task<ActionResult> Delete(int id)
         {
-            var item = await _toDoListItemService.GetToDoListItemsAsync(id);
+            var item = await _toDoListItemService.GetToDoListItemByIdAsync(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -97,7 +97,7 @@ namespace PWO.Client.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             await _toDoListItemService.DeleteToDoListItemAsync(id);
-            return RedirectToAction("Index", new { toDoListId = id });
+            return RedirectToAction("Index", "ToDoList");
         }
     }
 }
