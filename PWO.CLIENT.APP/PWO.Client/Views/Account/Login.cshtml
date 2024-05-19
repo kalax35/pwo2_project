@@ -1,0 +1,29 @@
+﻿@model PWO.Client.Services.Auth.Models.AuthenticationRequest
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("LoginAsync", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email)
+        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Password)
+        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+}
+
+@section Scripts {
+    <script>
+        // Dodaj tutaj skrypty JavaScript, jeśli są potrzebne
+    </script>
+}

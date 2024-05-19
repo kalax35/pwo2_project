@@ -28,8 +28,7 @@ namespace PWO.Client.Services.Auth
                 var request = new AuthenticationRequest()
                 {
                     Password = password,
-                    UserName = login,
-                    Token = token,
+                    Email = login
                 };
 
                 var response = await _requestService.PostAsync<AuthenticationRequest, AuthenticationResponse>(uri, request);

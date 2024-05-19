@@ -22,20 +22,24 @@ namespace PWO.Client.Controllers
             _requestService = requestService;
         }
 
-        public async Task<bool> LoginAsync(string login, string password, string token)
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        public async Task<bool> LoginAsync(AuthenticationRequest model)
         {
             try
             {
-                var uri = $"{ConfigurationManager.AppSettings["ApiBaseUrl"]}api/auth/login";
+                var uri = $"{ConfigurationManager.AppSettings["ApiBaseUrl"]}/login?useCookies=false&useSessionCookies=false";
 
-                var request = new AuthenticationRequest()
+                var request = new
                 {
-                    Password = password,
-                    UserName = login,
-                    Token = token,
+                    email = model.Email,
+                    password = model.Password
                 };
 
-                var response = await _requestService.PostAsync<AuthenticationRequest, AuthenticationResponse>(uri, request);
+                var response = await _requestService.PostAsync<object, AuthenticationResponse>(uri, request);
 
                 Session["ApiAccessToken"] = response.JWTToken;
                 Session["TokenExpiration"] = response.ExpiryDate;

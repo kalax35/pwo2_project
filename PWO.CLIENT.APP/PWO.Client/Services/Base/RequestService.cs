@@ -14,7 +14,7 @@ using System.Web;
 
 namespace PWO.Client.Services.Base
 {
-    public class RequestService
+    public class RequestService : IRequestService
     {
         private readonly HttpClient _httpClient;
         private readonly HttpContext _httpContext;
@@ -115,13 +115,13 @@ namespace PWO.Client.Services.Base
 
             if (string.IsNullOrEmpty(token))
             {
-                token = _httpContext.Session["ApiAccessToken"] as string;
+                token = _httpContext.Session["ApiSecurityToken"] as string;
             }
 
-            if (!string.IsNullOrEmpty(token))
-            {
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
+            _httpClient.DefaultRequestHeaders.Add("x-api-token", token);
+
+            if (!string.IsNullOrEmpty(accessToken))
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             return _httpClient;
         }

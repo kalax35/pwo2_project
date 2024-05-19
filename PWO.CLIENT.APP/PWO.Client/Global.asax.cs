@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PWO.Client.Services.Base;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -18,9 +19,9 @@ namespace PWO.Client
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            UnityConfig.RegisterComponents();
 
             SessionStateSection sessionStateSection = (SessionStateSection)ConfigurationManager.GetSection("system.web/sessionState");
-            sessionStateSection.Timeout = TimeSpan.FromMinutes(60);
         }
     }
 }
