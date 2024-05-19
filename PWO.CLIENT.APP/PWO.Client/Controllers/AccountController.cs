@@ -27,7 +27,7 @@ namespace PWO.Client.Controllers
             return View();
         }
 
-        public async Task<bool> LoginAsync(AuthenticationRequest model)
+        public async Task<RedirectToRouteResult> LoginAsync(AuthenticationRequest model)
         {
             try
             {
@@ -41,13 +41,13 @@ namespace PWO.Client.Controllers
 
                 var response = await _requestService.PostAsync<object, AuthenticationResponse>(uri, request);
 
-                Session["ApiAccessToken"] = response.JWTToken;
-                Session["TokenExpiration"] = response.ExpiryDate;
-                Session["UserId"] = response.UserId;
-                Session["UserName"] = response.UserName;
+                Session["ApiAccessToken"] = response.AccessToken;
+                Session["TokenExpiration"] = DateTime.UtcNow.AddSeconds(response.ExpiresIn);
+
 
                 _requestService.ClearHttpConfig();
-                return true;
+                return RedirectToAction("Index", "Home");
+                //return true;
             }
             catch (System.Exception ex)
             {

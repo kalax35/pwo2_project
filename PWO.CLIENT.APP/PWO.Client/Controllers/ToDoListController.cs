@@ -9,7 +9,6 @@ using System.Web.Mvc;
 
 namespace PWO.Client.Controllers
 {
-    [Authorize]
     public class ToDoListController : Controller
     {
         private readonly ToDoListService _toDoListService;

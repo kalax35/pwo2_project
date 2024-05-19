@@ -7,9 +7,9 @@ namespace PWO.Client.Services.Auth
 {
     public class AuthenticationResponse
     {
-        public string JWTToken { get; set; }
-        public DateTime ExpiryDate { get; set; }
-        public string UserId { get; set; }
-        public string UserName { get; set; }
+        public string Bearer { get; set; }
+        public string AccessToken { get; set; }
+        public int ExpiresIn { get; set; }
+        public string RefreshToken { get; set; }
     }
 }
