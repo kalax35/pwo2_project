@@ -227,6 +227,14 @@
     <Content Include="Views\ToDoList\Edit.cshtml" />
     <Content Include="Views\ToDoList\Delete.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\ToDoListItem\Edit.cshtml" />
+    <Content Include="Views\ToDoListItem\Details.cshtml" />
+    <Content Include="Views\ToDoListItem\Delete.cshtml" />
+    <Content Include="Views\ToDoListItem\Create.cshtml" />
+    <Content Include="Views\ToDoList\Share.cshtml" />
+    <Content Include="Views\ToDoList\ShareUsers.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\RegisterApproved.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

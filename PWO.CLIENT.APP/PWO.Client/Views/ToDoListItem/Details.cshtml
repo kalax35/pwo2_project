@@ -1,0 +1,48 @@
+﻿@model PWO.Client.Models.Items.ToDoListItemReadDto
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>ToDo List Item Details</h2>
+
+<div>
+    <h4>ToDo List Item</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsCompleted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreationTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CompletionTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CompletionTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CompletionUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CompletionUser)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

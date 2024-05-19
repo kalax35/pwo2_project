@@ -1,4 +1,6 @@
 ﻿using PWO.Client.Models.List;
+using PWO.Client.Models.Share;
+using PWO.Client.Services.ToDoListItems;
 using PWO.Client.Services.ToDoLists;
 using System;
 using System.Collections.Generic;
@@ -34,9 +36,46 @@ namespace PWO.Client.Controllers
             return View(toDoList);
         }
 
+        public async Task<ActionResult> ShareUsers(int id)
+        {
+            var sharedUsers = await _toDoListService.GetToDoListSharesAsync(id);
+            return View(sharedUsers);
+        }
+
+        public async Task<ActionResult> Share(int id)
+        {
+            var toDoList = await _toDoListService.GetToDoListByIdAsync(id);
+            if (toDoList == null)
+            {
+                return HttpNotFound();
+            }
+
+            ToDoListShareCreateDto dto = new ToDoListShareCreateDto()
+            {
+                ToDoListId = id,
+            };
+            return View(dto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateToDoListShare(ToDoListShareCreateDto share)
+        {
+            if (ModelState.IsValid)
+            {
+                await _toDoListService.CreateToDoListShareAsync(share);
+
+                return RedirectToAction("Index");
+            }
+
+            var listToShow = await _toDoListService.GetToDoListByIdAsync(share.ToDoListId);
+            return View(listToShow);
+        }
+
         public ActionResult Create()
         {
-            return View();
+            ToDoListCreateDto listToCreate = new ToDoListCreateDto();
+            return View(listToCreate);
         }
 
         [HttpPost]
@@ -46,6 +85,7 @@ namespace PWO.Client.Controllers
             if (ModelState.IsValid)
             {
                 await _toDoListService.CreateToDoListAsync(toDoList);
+
                 return RedirectToAction("Index");
             }
             return View(toDoList);
@@ -63,11 +103,17 @@ namespace PWO.Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, ToDoListUpdateDto toDoList)
+        public async Task<ActionResult> Edit(int id, ToDoListDetailsDto toDoList)
         {
             if (ModelState.IsValid)
             {
-                await _toDoListService.UpdateToDoListAsync(id, toDoList);
+                ToDoListUpdateDto listToUpdate = new ToDoListUpdateDto()
+                {
+                    IsCompleted = toDoList.IsCompleted,
+                    Name = toDoList.Name,
+                };
+                
+                await _toDoListService.UpdateToDoListAsync(id, listToUpdate);
                 return RedirectToAction("Index");
             }
             return View(toDoList);

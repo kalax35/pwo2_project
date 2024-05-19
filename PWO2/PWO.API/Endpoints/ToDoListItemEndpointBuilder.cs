@@ -1,4 +1,5 @@
 ﻿
+using IO.Api.Dto.List;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using PWO.API.Dto.Items;
@@ -12,6 +13,28 @@ namespace PWO.API.Endpoints
     {
         public static void RegisterEndpoints(ref WebApplication app)
         {
+            app.MapGet("/todolistitems/{id}", async (int id, AppDbContext db, HttpContext httpContext) =>
+            {
+                var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var item = await db.ToDoListItems.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (!(await db.ToDoLists.AnyAsync(x => x.Id == id)))
+                {
+                    if (!(await db.ToDoListShares.AnyAsync(x => x.UserId == userId)))
+                    {
+                        return Results.NotFound();
+                    }
+                }
+
+                return Results.Ok(new ToDoListItem()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    CreationTime = item.CreationTime,
+                    IsCompleted = item.IsCompleted,
+                });
+            }).RequireAuthorization().WithOpenApi();
+
             app.MapPost("/todolistitems", async (ToDoListItemCreateDto inputItem, AppDbContext db, HttpContext httpContext) =>
             {
                 var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

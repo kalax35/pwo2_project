@@ -48,7 +48,7 @@ namespace PWO.API.Endpoints
                     Name = item.Name,
                     CreationTime = item.CreationTime,
                     IsCompleted = item.IsCompleted,
-                    Items = await db.ToDoListItems.Select(x => new ToDoListItemReadDto()
+                    Items = await db.ToDoListItems.Where(x => x.ToDoListId == id).Select(x => new ToDoListItemReadDto()
                     {
                         CreationTime = x.CreationTime,
                         Id = x.Id,

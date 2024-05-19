@@ -11,7 +11,6 @@ using System.Web.Mvc;
 
 namespace PWO.Client.Controllers
 {
-    [Authorize]
     public class ToDoListItemController : Controller
     {
         private readonly ToDoListItemService _toDoListItemService;
@@ -21,16 +20,19 @@ namespace PWO.Client.Controllers
             _toDoListItemService = toDoListItemService;
         }
 
-        public async Task<ActionResult> Index(int toDoListId)
+        public async Task<ActionResult> Details(int toDoListItemId)
         {
-            var items = await _toDoListItemService.GetToDoListItemsAsync(toDoListId);
+            var items = await _toDoListItemService.GetToDoListItemByIdAsync(toDoListItemId);
             return View(items);
         }
 
-        public ActionResult Create(int toDoListId)
+        public ActionResult Create(int id)
         {
-            ViewBag.ToDoListId = toDoListId;
-            return View();
+            ToDoListItemCreateDto itemToCreate = new ToDoListItemCreateDto()
+            {
+                ToDoListId = id,
+            };
+            return View(itemToCreate);
         }
 
         [HttpPost]
@@ -40,19 +42,25 @@ namespace PWO.Client.Controllers
             if (ModelState.IsValid)
             {
                 await _toDoListItemService.CreateToDoListItemAsync(item);
-                return RedirectToAction("Index", new { toDoListId = item.ToDoListId });
+                return RedirectToAction("Details", "ToDoList", new { id = item.ToDoListId });
             }
             return View(item);
         }
 
         public async Task<ActionResult> Edit(int id)
         {
-            var item = await _toDoListItemService.GetToDoListItemsAsync(id);
-            if (item == null)
+            //var item = await _toDoListItemService.GetToDoListItemsAsync(id);
+            //if (item == null)
+            //{
+            //    return HttpNotFound();
+            //}
+
+            ToDoListItemUpdateDto itemToUpdate = new ToDoListItemUpdateDto()
             {
-                return HttpNotFound();
-            }
-            return View(item);
+                Id = id,
+                
+            };
+            return View(itemToUpdate);
         }
 
         [HttpPost]

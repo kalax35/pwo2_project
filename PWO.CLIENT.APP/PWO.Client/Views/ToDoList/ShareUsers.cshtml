@@ -1,0 +1,33 @@
+﻿@model IEnumerable<PWO.Client.Models.Share.ToDoListShareReadDto>
+
+@{
+    ViewBag.Title = "Shared Users";
+}
+
+<h2>Shared Users</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.SharedUserName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No users have been shared with this list.</p>
+}
+<div>
+    @Html.ActionLink("Back to todolists", "Index")
+</div>

@@ -6,6 +6,16 @@
 
 <h2>ToDo List Details</h2>
 
+<p>
+    @Html.ActionLink("Share", "Share", "ToDoList", new { id = Model.Id }, null)
+</p>
+<p>
+    @Html.ActionLink("Shares", "ShareUsers", "ToDoList", new { id = Model.Id }, null)
+</p>
+<p>
+    @Html.ActionLink("Add new item", "Create", "ToDoListItem", new { id = Model.Id }, null)
+</p>
+
 <div>
     <h4>ToDoList</h4>
     <hr />
@@ -49,7 +59,8 @@
                     <td>@item.CreationTime</td>
                     <td>@item.IsCompleted</td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", "ToDoListItem", new { id = item.Id }, null) |
+                        @Html.ActionLink("Details", "Details", "ToDoListItem", new { toDoListItemId = item.Id }, null) |
+ |
                         @Html.ActionLink("Delete", "Delete", "ToDoListItem", new { id = item.Id }, null)
                     </td>
                 </tr>

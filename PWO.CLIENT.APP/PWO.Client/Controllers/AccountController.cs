@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Security.Policy;
 
 namespace PWO.Client.Controllers
 {
@@ -54,6 +55,51 @@ namespace PWO.Client.Controllers
 
                 throw;
             }
+        }
+
+        [HttpGet]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(AuthenticationRequest model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var uri = $"{ConfigurationManager.AppSettings["ApiBaseUrl"]}/register";
+
+            var request = new
+            {
+                email = model.Email,
+                password = model.Password
+            };
+
+            try
+            {
+                var response = await _requestService.PostAsync<object>(uri, request);
+
+                return RedirectToAction("RegisterApproved");
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Registration failed: " + ex.Message);
+            }
+
+            ModelState.AddModelError("", "Registration failed.");
+            return View(model);
+
+        }
+
+        public ActionResult RegisterApproved()
+        {
+            return View();
         }
     }
 }
