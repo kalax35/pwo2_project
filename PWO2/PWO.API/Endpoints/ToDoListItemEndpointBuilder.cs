@@ -81,7 +81,7 @@ namespace PWO.API.Endpoints
             app.MapPut("/todolistitems/{id}", async (int id, ToDoListItemUpdateDto inputItem, AppDbContext db, HttpContext httpContext) =>
             {
                 var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var item = await db.ToDoListItems.FirstOrDefaultAsync(x => x.Id == id && x.CreationUserId == userId);
+                var item = await db.ToDoListItems.FirstOrDefaultAsync(x => x.ToDoListId == id && x.CreationUserId == userId && x.Id == inputItem.Id);
 
                 if (item == null)
                 {

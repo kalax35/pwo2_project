@@ -43,6 +43,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Mark as completed", "Edit", new { id = Model.Id, listId = Model.listId }) |
+    @Html.ActionLink("Back", "Index", "ToDoList")
 </p>

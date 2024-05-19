@@ -10,5 +10,6 @@ namespace PWO.Client.Models.Items
         public DateTime CreationTime { get; set; }
         public DateTime? CompletionTime { get; set; }
         public string CompletionUser { get; set; }
+        public int listId { get; set; }
     }
 }

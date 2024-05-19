@@ -1,8 +1,9 @@
 ﻿namespace PWO.Client.Models.Items
 {
-    public class ToDoListItemUpdateDto : ToDoListItemReadDto
+    public class ToDoListItemUpdateDto 
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public bool? IsCompleted { get; set; }
+        public bool IsCompleted { get; set; }
     }
 }

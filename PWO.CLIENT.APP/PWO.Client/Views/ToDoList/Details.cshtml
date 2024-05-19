@@ -59,7 +59,7 @@
                     <td>@item.CreationTime</td>
                     <td>@item.IsCompleted</td>
                     <td>
-                        @Html.ActionLink("Details", "Details", "ToDoListItem", new { toDoListItemId = item.Id }, null) |
+                        @Html.ActionLink("Details", "Details", "ToDoListItem", new { toDoListItemId = item.Id, listId = Model.Id }, null) |
  |
                         @Html.ActionLink("Delete", "Delete", "ToDoListItem", new { id = item.Id }, null)
                     </td>

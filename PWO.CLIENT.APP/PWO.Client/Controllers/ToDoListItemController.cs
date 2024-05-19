@@ -1,10 +1,12 @@
-﻿using PWO.Client.Models.Items;
+﻿using PWO.Client.Models;
+using PWO.Client.Models.Items;
 using PWO.Client.Models.List;
 using PWO.Client.Services.ToDoListItems;
 using PWO.Client.Services.ToDoLists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -20,10 +22,11 @@ namespace PWO.Client.Controllers
             _toDoListItemService = toDoListItemService;
         }
 
-        public async Task<ActionResult> Details(int toDoListItemId)
+        public async Task<ActionResult> Details(int toDoListItemId, int listId)
         {
-            var items = await _toDoListItemService.GetToDoListItemByIdAsync(toDoListItemId);
-            return View(items);
+            var item = await _toDoListItemService.GetToDoListItemByIdAsync(toDoListItemId);
+            item.listId = listId;
+            return View(item);
         }
 
         public ActionResult Create(int id)
@@ -47,30 +50,34 @@ namespace PWO.Client.Controllers
             return View(item);
         }
 
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit(int id, int listId)
         {
-            //var item = await _toDoListItemService.GetToDoListItemsAsync(id);
-            //if (item == null)
-            //{
-            //    return HttpNotFound();
-            //}
+            var item = await _toDoListItemService.GetToDoListItemByIdAsync(id);
 
-            ToDoListItemUpdateDto itemToUpdate = new ToDoListItemUpdateDto()
+            ToDoListItemListUpdateDto itemToUpdate = new ToDoListItemListUpdateDto()
             {
                 Id = id,
-                
+                Name = item.Name,
+                listId = listId,
+                IsCompleted = item.IsCompleted,
             };
             return View(itemToUpdate);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, ToDoListItemUpdateDto item)
+        public async Task<ActionResult> Edit(ToDoListItemListUpdateDto item)
         {
             if (ModelState.IsValid)
             {
-                await _toDoListItemService.UpdateToDoListItemAsync(id, item);
-                return RedirectToAction("Index");
+                ToDoListItemUpdateDto toSend = new ToDoListItemUpdateDto()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    IsCompleted = item.IsCompleted,
+                };
+                await _toDoListItemService.UpdateToDoListItemAsync(item.listId, toSend);
+                return RedirectToAction("Index", "ToDoList");
             }
             return View(item);
         }

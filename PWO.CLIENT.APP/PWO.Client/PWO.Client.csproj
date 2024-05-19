@@ -147,6 +147,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Items\ToDoListItemCreateDto.cs" />
+    <Compile Include="Models\Items\ToDoListItemListUpdateDto.cs" />
     <Compile Include="Models\Items\ToDoListItemReadDto.cs" />
     <Compile Include="Models\Items\ToDoListItemUpdateDto.cs" />
     <Compile Include="Models\List\ToDoListCreateDto.cs" />
