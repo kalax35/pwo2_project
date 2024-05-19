@@ -1,0 +1,37 @@
+﻿@model IEnumerable<PWO.Client.Models.List.ToDoListReadDto>
+
+@{
+    ViewBag.Title = "ToDo Lists";
+}
+
+<h2>ToDo Lists</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Creation Time</th>
+            <th>Is Completed</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.CreationTime</td>
+                <td>@item.IsCompleted</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

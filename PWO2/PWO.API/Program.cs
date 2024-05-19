@@ -47,6 +47,7 @@ app.MapGet("/", (HttpContext httpContext) => $"ID: {httpContext.User.FindFirstVa
 ToDoListEndpointBuilder.RegisterEndpoints(ref app);
 ToDoListItemEndpointBuilder.RegisterEndpoints(ref app);
 ToDoListISharesEndpointBuilder.RegisterEndpoints(ref app);
+NotificationEndpointBuilder.RegisterEndpoints(ref app);
 
 
 app.UseSwagger();
