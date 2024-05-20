@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using PWO.Client.App_Start;
+using System.Web;
 using System.Web.Mvc;
 
 namespace PWO.Client
@@ -8,7 +9,7 @@ namespace PWO.Client
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-
+            //filters.Add(new RefreshTokenAttribute());
         }
     }
 }
