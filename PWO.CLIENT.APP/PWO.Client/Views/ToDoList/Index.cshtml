@@ -1,10 +1,5 @@
 ﻿@model IEnumerable<PWO.Client.Models.List.ToDoListReadDto>
 
-@{
-    ViewBag.Title = "ToDo Lists";
-}
-
-<h2>ToDo Lists</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -35,3 +30,24 @@
         }
     </tbody>
 </table>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        $(document).ready(function () {
+            var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7169/notificationHub").build();
+
+            connection.start().then(function () {
+                console.log("Connection to notificationHub established.");
+            }).catch(function (err) {
+                return console.error(err.toString());
+            });
+
+            connection.on("ReceiveNotification", function (message) {
+                console.log("Notification received: " + message);
+            });
+        });
+    </script>
+}

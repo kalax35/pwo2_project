@@ -3,11 +3,27 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PWO.API;
 using PWO.API.Endpoints;
+using PWO.API.Hubs;
 using PWO.API.Models;
+using PWO.API.Worker;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Security.Claims;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy
+                          .WithOrigins("https://localhost:44383")
+                          .AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                      });
+});
+
 
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
@@ -17,6 +33,10 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data S
 builder.Services.AddIdentityCore<PWOUser>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddApiEndpoints();
+
+builder.Services.AddSignalR();
+
+builder.Services.AddHostedService<NotificationWorker>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -36,12 +56,16 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+
+app.UseCors(MyAllowSpecificOrigins);
+//app.UseCors(config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+
 // Adds /register, /login and /refresh endpoints
 app.MapIdentityApi<PWOUser>();
 
 app.MapGet("/", (HttpContext httpContext) => $"ID: {httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)}").RequireAuthorization().WithOpenApi();
 
-
+app.MapHub<NotificationHub>("/notificationHub");
 
 //app endpoints
 ToDoListEndpointBuilder.RegisterEndpoints(ref app);

@@ -10,6 +10,7 @@ namespace PWO.Client.Controllers
     {
         public ActionResult Index()
         {
+            //return View();
             if (Session["ApiAccessToken"] != null)
             {
                 return RedirectToAction("Index", "ToDoList");

@@ -151,7 +151,13 @@ namespace PWO.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsRead")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSent")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Message")
