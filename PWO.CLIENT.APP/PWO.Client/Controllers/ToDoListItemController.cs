@@ -22,6 +22,7 @@ namespace PWO.Client.Controllers
             _toDoListItemService = toDoListItemService;
         }
 
+
         public async Task<ActionResult> Details(int toDoListItemId, int listId)
         {
             var item = await _toDoListItemService.GetToDoListItemByIdAsync(toDoListItemId);
@@ -77,7 +78,7 @@ namespace PWO.Client.Controllers
                     IsCompleted = item.IsCompleted,
                 };
                 await _toDoListItemService.UpdateToDoListItemAsync(item.listId, toSend);
-                return RedirectToAction("Index", "ToDoList");
+                return RedirectToAction("Details", "ToDoList", new { id = item.listId });
             }
             return View(item);
         }

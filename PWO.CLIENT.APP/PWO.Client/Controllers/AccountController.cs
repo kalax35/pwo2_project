@@ -42,6 +42,7 @@ namespace PWO.Client.Controllers
 
                 var response = await _requestService.PostAsync<object, AuthenticationResponse>(uri, request);
 
+                Session["UserName"] = request.email;
                 Session["ApiAccessToken"] = response.AccessToken;
                 Session["TokenExpiration"] = DateTime.UtcNow.AddSeconds(response.ExpiresIn);
 
@@ -100,6 +101,14 @@ namespace PWO.Client.Controllers
         public ActionResult RegisterApproved()
         {
             return View();
+        }
+
+        public ActionResult Logout()
+        {
+            Session["UserName"] = "";
+            Session["ApiAccessToken"] = "";
+            Session["TokenExpiration"] = "";
+            return RedirectToAction("Login", "Account");
         }
     }
 }

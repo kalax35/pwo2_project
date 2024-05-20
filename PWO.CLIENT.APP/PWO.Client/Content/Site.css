@@ -18,3 +18,141 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+.container {
+    width: 1000px;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: #f2f2f2;
+}
+
+h2 {
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button.btn.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+    button.btn.btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+a.btn.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+    a.btn.btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+    .table th, .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+        .table th:last-child, .table td:last-child {
+            text-align: center;
+        }
+
+    .table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table tr:hover {
+        background-color: #ddd;
+    }
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dl-horizontal dt {
+    width: 200px;
+    float: left;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+.dl-horizontal dd {
+    margin-left: 240px;
+}
+
+.btn {
+    margin-right: 10px;
+}
+
+    .btn.btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: #fff;
+    }
+
+    .btn.btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+    }
+
+        .btn.btn-success:hover,
+        .btn.btn-secondary:hover {
+            opacity: 0.8;
+        }
+
+.buttons-options {
+    display: flex;
+    justify-content: center;
+}
+

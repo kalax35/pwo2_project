@@ -1,20 +1,22 @@
 ﻿@model PWO.Client.Models.List.ToDoListDetailsDto
 
 @{
-    ViewBag.Title = "ToDo List Details";
+    ViewBag.Title = Model.Name;
 }
 
-<h2>ToDo List Details</h2>
+<h2>@Model.Name</h2>
 
-<p>
-    @Html.ActionLink("Share", "Share", "ToDoList", new { id = Model.Id }, null)
-</p>
-<p>
-    @Html.ActionLink("Shares", "ShareUsers", "ToDoList", new { id = Model.Id }, null)
-</p>
-<p>
-    @Html.ActionLink("Add new item", "Create", "ToDoListItem", new { id = Model.Id }, null)
-</p>
+<div style="display: flex; justify-content: space-evenly;">
+    <p>
+        @Html.ActionLink("Share", "Share", "ToDoList", new { id = Model.Id }, new { @class = "btn btn-success" })
+    </p>
+    <p>
+        @Html.ActionLink("Shares", "ShareUsers", "ToDoList", new { id = Model.Id }, new { @class = "btn btn-secondary" })
+    </p>
+    <p>
+        @Html.ActionLink("Add new item", "Create", "ToDoListItem", new { id = Model.Id }, new { @class = "btn btn-info" })
+    </p>
+</div>
 
 <div>
     <h4>ToDoList</h4>
@@ -59,16 +61,17 @@
                     <td>@item.CreationTime</td>
                     <td>@item.IsCompleted</td>
                     <td>
-                        @Html.ActionLink("Details", "Details", "ToDoListItem", new { toDoListItemId = item.Id, listId = Model.Id }, null) |
- |
-                        @Html.ActionLink("Delete", "Delete", "ToDoListItem", new { id = item.Id }, null)
+                        @Html.ActionLink("Details", "Details", "ToDoListItem", new { toDoListItemId = item.Id, listId = Model.Id }, new { @class = "btn btn-secondary" })
+ 
+                        @Html.ActionLink("Delete", "Delete", "ToDoListItem", new { id = item.Id }, new { @class = "btn btn-danger" })
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+<div class="buttons-options">
+
+    @Html.ActionLink("Mark as completed", "Edit", new { id = Model.Id }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
 </div>

@@ -3,29 +3,25 @@
     ViewBag.Title = "Login";
 }
 
-<h2>Login</h2>
+    <h2>Login</h2>
 
-@using (Html.BeginForm("LoginAsync", "Account", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+    @using (Html.BeginForm("LoginAsync", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Email)
-        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email)
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Password)
-        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password)
+            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+        </div>
 
-    <button type="submit" class="btn btn-primary">Login</button>
-}
+        <button type="submit" class="btn btn-primary">Login</button>
+    }
 
-@Html.ActionLink("Register", "Register", "Account", null, new { @class = "btn btn-primary" })
 
-@section Scripts {
-    <script>
+    @Html.ActionLink("Register", "Register", "Account", null, new { @class = "btn btn-primary" })
 
-    </script>
-}

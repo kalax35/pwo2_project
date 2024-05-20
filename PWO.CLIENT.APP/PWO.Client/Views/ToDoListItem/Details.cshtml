@@ -4,18 +4,11 @@
     ViewBag.Title = "Details";
 }
 
-<h2>ToDo List Item Details</h2>
+<h2>@Html.DisplayFor(model => model.Name)</h2>
 
 <div>
-    <h4>ToDo List Item</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.IsCompleted)
         </dt>
@@ -28,21 +21,12 @@
         <dd>
             @Html.DisplayFor(model => model.CreationTime)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CompletionTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CompletionTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CompletionUser)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CompletionUser)
-        </dd>
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Mark as completed", "Edit", new { id = Model.Id, listId = Model.listId }) |
-    @Html.ActionLink("Back", "Index", "ToDoList")
-</p>
+<div class="buttons-options">
+    @if (!Model.IsCompleted)
+    {
+    @Html.ActionLink("Mark as completed", "Edit", new { id = Model.Id, listId = Model.listId }, new { @class = "btn btn-success" })
+    }
+    @Html.ActionLink("Back", "Details", "ToDoList", new { id = Model.listId}, new { @class = "btn btn-secondary" })
+</div>

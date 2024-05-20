@@ -10,8 +10,8 @@ namespace PWO.Client.Controllers
     {
         public ActionResult Index()
         {
-            //return View();
-            if (Session["ApiAccessToken"] != null)
+            var apiAccessToken = Session["ApiAccessToken"] as string;
+            if (!string.IsNullOrEmpty(apiAccessToken))
             {
                 return RedirectToAction("Index", "ToDoList");
             }
@@ -19,20 +19,6 @@ namespace PWO.Client.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
     }
 }

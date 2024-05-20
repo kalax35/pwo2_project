@@ -3,29 +3,33 @@
     ViewBag.Title = "Create ToDo List Share";
 }
 
-<h2>Create ToDo List Share</h2>
+<h2>Share the list</h2>
 
 @using (Html.BeginForm("CreateToDoListShare", "ToDoList", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>ToDoListShare</h4>
+        <h4>Enter email of user to share</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         @Html.HiddenFor(model => model.ToDoListId)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label" })
+
             @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
         </div>
 
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary">Share</button>
     </div>
    
 }
+
+<div>
+    @Html.ActionLink("Back to List", "Details", "ToDoList", new { id = Model.ToDoListId }, new { @class = "btn btn-secondary" })
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
