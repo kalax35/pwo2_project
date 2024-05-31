@@ -106,7 +106,7 @@ namespace PWO.API.Endpoints
             app.MapPut("/todolists/{id}", async (int id, ToDoListUpdateDto inputItem, AppDbContext db, HttpContext httpContext) =>
             {
                 var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var item = await db.ToDoLists.FirstOrDefaultAsync(x => x.Id == id && x.CreationUserId == userId);
+                var item = await db.ToDoLists.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (item == null) return Results.NotFound();
 
@@ -118,15 +118,24 @@ namespace PWO.API.Endpoints
                     {
                         item.CompletionTime = DateTime.Now;
 
-                        var notification = new Notification
+                        var sharedUserIds = await db.ToDoListShares
+                                .Where(x => x.ToDoListId == id)
+                                .Select(x => x.UserId)
+                                .ToListAsync();
+                        sharedUserIds.Add(userId);
+
+                        foreach (var shareId in sharedUserIds)
                         {
-                            UserId = userId,
-                            Message = "Lista zadań została zakończona.",
-                            CreatedAt = DateTime.Now,
-                            IsSent = false,
-                            IsRead = false
-                        };
-                        db.Notifications.Add(notification);
+                            var notification = new Notification
+                            {
+                                UserId = shareId,
+                                Message = $"Lista zadań: {item.Name} została zakończona",
+                                CreatedAt = DateTime.Now,
+                                IsSent = false,
+                                IsRead = false
+                            };
+                            db.Notifications.Add(notification);
+                        }
                     }
                     else
                     {

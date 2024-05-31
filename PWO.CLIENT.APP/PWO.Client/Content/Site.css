@@ -156,3 +156,51 @@ h2 {
     justify-content: center;
 }
 
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
+button{
+    width: 100px;
+    height: 40px;
+}
+
+a.btn {
+    width: 100px;
+    height: 40px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin: auto !important;
+    margin-top: 20px !important;
+}
+
+.btn {
+    width: 100px;
+    height: 40px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin: auto !important;
+    margin-top: 20px !important;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.system-logo {
+    display: flex;
+    align-items: center !important;
+    justify-content: center !important;
+}

@@ -37,6 +37,16 @@ namespace PWO.API.Worker
                         notification.IsSent = true;
                     }
 
+                    //foreach (var notification in notificationsToSend)
+                    //{
+                    //    // Wysyłaj powiadomienia tylko do użytkownika przypisanego do każdego powiadomienia
+                    //    await _hubContext.Clients.User(notification.UserId.ToString()).SendAsync("ReceiveNotification", notification.Message);
+
+                    //    // Oznacz powiadomienie jako wysłane
+                    //    notification.IsSent = true;
+                    //}
+
+
                     await _dbContext.SaveChangesAsync();
 
                     await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);

@@ -46,7 +46,7 @@ namespace PWO.API.Endpoints
                         return Results.NotFound();
                     }                      
                 }
-
+                var toDoList = await db.ToDoLists.FirstOrDefaultAsync(x => x.Id == inputItem.ToDoListId);
                 var item = new ToDoListItem()
                 {
                     Name = inputItem.Name,
@@ -67,7 +67,7 @@ namespace PWO.API.Endpoints
                         var notification = new Notification
                         {
                             UserId = sharedUserId,
-                            Message = $"Nowy element został dodany do listy zadań."
+                            Message = $"Nowy element {item.Name} został dodany do listy zadań {toDoList.Name}"
                         };
                         db.Notifications.Add(notification);
                     }

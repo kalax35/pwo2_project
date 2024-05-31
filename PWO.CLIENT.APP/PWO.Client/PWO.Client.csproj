@@ -323,6 +323,13 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Images\basket-shopping-solid.svg" />
+    <Content Include="Content\Images\favicon\android-chrome-192x192.png" />
+    <Content Include="Content\Images\favicon\android-chrome-512x512.png" />
+    <Content Include="Content\Images\favicon\apple-touch-icon.png" />
+    <Content Include="Content\Images\favicon\favicon-16x16.png" />
+    <Content Include="Content\Images\favicon\favicon-32x32.png" />
+    <Content Include="Content\Images\favicon\favicon.ico" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -332,6 +339,7 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\Images\favicon\site.webmanifest" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
