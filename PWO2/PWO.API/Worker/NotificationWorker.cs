@@ -32,10 +32,7 @@ namespace PWO.API.Worker
 
                     foreach (var notification in notificationsToSend)
                     {
-                        //await _hubContext.Clients.All.SendAsync("ReceiveNotification", notification.Message, notification.UserId);
                         await _hubContext.Clients.All.SendAsync("ReceiveNotification", new { message = notification.Message, userId = notification.UserId });
-
-
                         notification.IsSent = true;
                     }
 
