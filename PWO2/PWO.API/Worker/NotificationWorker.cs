@@ -32,19 +32,12 @@ namespace PWO.API.Worker
 
                     foreach (var notification in notificationsToSend)
                     {
-                        await _hubContext.Clients.All.SendAsync("ReceiveNotification", notification.Message);
+                        //await _hubContext.Clients.All.SendAsync("ReceiveNotification", notification.Message, notification.UserId);
+                        await _hubContext.Clients.All.SendAsync("ReceiveNotification", new { message = notification.Message, userId = notification.UserId });
+
 
                         notification.IsSent = true;
                     }
-
-                    //foreach (var notification in notificationsToSend)
-                    //{
-                    //    // Wysyłaj powiadomienia tylko do użytkownika przypisanego do każdego powiadomienia
-                    //    await _hubContext.Clients.User(notification.UserId.ToString()).SendAsync("ReceiveNotification", notification.Message);
-
-                    //    // Oznacz powiadomienie jako wysłane
-                    //    notification.IsSent = true;
-                    //}
 
 
                     await _dbContext.SaveChangesAsync();

@@ -24,119 +24,196 @@ namespace PWO.Client.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var toDoLists = await _toDoListService.GetToDoListsAsync();
-            return View(toDoLists);
+            try
+            {
+                var toDoLists = await _toDoListService.GetToDoListsAsync();
+                return View(toDoLists);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Index"));
+            }
         }
 
         public async Task<ActionResult> Details(int id)
         {
-            var toDoList = await _toDoListService.GetToDoListByIdAsync(id);
-            if (toDoList == null)
+            try
             {
-                return HttpNotFound();
+                var toDoList = await _toDoListService.GetToDoListByIdAsync(id);
+                if (toDoList == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(toDoList);
             }
-            return View(toDoList);
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Details"));
+            }
         }
 
         public async Task<ActionResult> ShareUsers(int id)
         {
-            var sharedUsers = await _toDoListService.GetToDoListSharesAsync(id);
-            return View(sharedUsers);
+            try
+            {
+                var sharedUsers = await _toDoListService.GetToDoListSharesAsync(id);
+                return View(sharedUsers);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Share"));
+            }
         }
 
         public async Task<ActionResult> Share(int id)
         {
-            var toDoList = await _toDoListService.GetToDoListByIdAsync(id);
-            if (toDoList == null)
+            try
             {
-                return HttpNotFound();
-            }
+                var toDoList = await _toDoListService.GetToDoListByIdAsync(id);
+                if (toDoList == null)
+                {
+                    return HttpNotFound();
+                }
 
-            ToDoListShareCreateDto dto = new ToDoListShareCreateDto()
+                ToDoListShareCreateDto dto = new ToDoListShareCreateDto
+                {
+                    ToDoListId = id,
+                };
+                return View(dto);
+            }
+            catch (Exception ex)
             {
-                ToDoListId = id,
-            };
-            return View(dto);
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Share"));
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateToDoListShare(ToDoListShareCreateDto share)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _toDoListService.CreateToDoListShareAsync(share);
+                if (ModelState.IsValid)
+                {
+                    await _toDoListService.CreateToDoListShareAsync(share);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+
+                var listToShow = await _toDoListService.GetToDoListByIdAsync(share.ToDoListId);
+                return View(listToShow);
             }
-
-            var listToShow = await _toDoListService.GetToDoListByIdAsync(share.ToDoListId);
-            return View(listToShow);
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Share"));
+            }
         }
 
         public ActionResult Create()
         {
-            ToDoListCreateDto listToCreate = new ToDoListCreateDto();
-            return View(listToCreate);
+            try
+            {
+                ToDoListCreateDto listToCreate = new ToDoListCreateDto();
+                return View(listToCreate);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Share"));
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ToDoListCreateDto toDoList)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _toDoListService.CreateToDoListAsync(toDoList);
+                if (ModelState.IsValid)
+                {
+                    await _toDoListService.CreateToDoListAsync(toDoList);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                return View(toDoList);
             }
-            return View(toDoList);
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Share"));
+            }
         }
 
         public async Task<ActionResult> Edit(int id)
         {
-            var toDoList = await _toDoListService.GetToDoListByIdAsync(id);
-            if (toDoList == null)
+            try
             {
-                return HttpNotFound();
+                var toDoList = await _toDoListService.GetToDoListByIdAsync(id);
+                if (toDoList == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(toDoList);
             }
-            return View(toDoList);
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Share"));
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, ToDoListDetailsDto toDoList)
         {
-            if (ModelState.IsValid)
+            try
             {
-                ToDoListUpdateDto listToUpdate = new ToDoListUpdateDto()
+                if (ModelState.IsValid)
                 {
-                    IsCompleted = toDoList.IsCompleted,
-                    Name = toDoList.Name,
-                };
-                
-                await _toDoListService.UpdateToDoListAsync(id, listToUpdate);
-                return RedirectToAction("Index");
+                    ToDoListUpdateDto listToUpdate = new ToDoListUpdateDto()
+                    {
+                        IsCompleted = toDoList.IsCompleted,
+                        Name = toDoList.Name,
+                    };
+
+                    await _toDoListService.UpdateToDoListAsync(id, listToUpdate);
+                    return RedirectToAction("Index");
+                }
+                return View(toDoList);
             }
-            return View(toDoList);
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Share"));
+            }
         }
 
         public async Task<ActionResult> Delete(int id)
         {
-            var toDoList = await _toDoListService.GetToDoListByIdAsync(id);
-            if (toDoList == null)
+            try
             {
-                return HttpNotFound();
+                var toDoList = await _toDoListService.GetToDoListByIdAsync(id);
+                if (toDoList == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(toDoList);
             }
-            return View(toDoList);
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Share"));
+            }
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            await _toDoListService.DeleteToDoListAsync(id);
-            return RedirectToAction("Index");
+            try
+            {
+                await _toDoListService.DeleteToDoListAsync(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "ToDoList", "Share"));
+            }
         }
     }
 }

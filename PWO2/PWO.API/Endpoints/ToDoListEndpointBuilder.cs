@@ -31,7 +31,7 @@ namespace PWO.API.Endpoints
             app.MapGet("/todolists/{id}", async (int id, AppDbContext db, HttpContext httpContext) =>
             {
                 var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var item = await db.ToDoLists.FirstOrDefaultAsync(x => x.Id == id && x.CreationUserId == userId);
+                var item = await db.ToDoLists.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (item == null)
                 {
@@ -107,6 +107,7 @@ namespace PWO.API.Endpoints
             {
                 var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var item = await db.ToDoLists.FirstOrDefaultAsync(x => x.Id == id);
+                var user = await db.Users.FirstOrDefaultAsync(x => x.Id.Equals(userId));
 
                 if (item == null) return Results.NotFound();
 
@@ -120,9 +121,8 @@ namespace PWO.API.Endpoints
 
                         var sharedUserIds = await db.ToDoListShares
                                 .Where(x => x.ToDoListId == id)
-                                .Select(x => x.UserId)
+                                .Select(x => x.Email)
                                 .ToListAsync();
-                        sharedUserIds.Add(userId);
 
                         foreach (var shareId in sharedUserIds)
                         {
@@ -150,7 +150,7 @@ namespace PWO.API.Endpoints
             app.MapDelete("/todolists/{id}", async (int id, AppDbContext db, HttpContext httpContext) =>
             {
                 var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (await db.ToDoLists.FirstOrDefaultAsync(x => x.Id == id && x.CreationUserId == userId) is ToDoList item)
+                if (await db.ToDoLists.FirstOrDefaultAsync(x => x.Id == id) is ToDoList item)
                 {
                     db.ToDoLists.Remove(item);
                     await db.SaveChangesAsync();

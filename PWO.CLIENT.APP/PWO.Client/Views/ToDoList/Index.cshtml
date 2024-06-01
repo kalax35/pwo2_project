@@ -22,7 +22,7 @@
                 <td>@item.CreationTime</td>
                 <td>@item.IsCompleted</td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-secondary" }) 
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-secondary" })
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                 </td>
             </tr>
@@ -35,38 +35,43 @@
     <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
     <script src="~/signalr/hubs"></script>
     <script>
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": false,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        };
+      var userEmail = '@HttpContext.Current.Session["UserName"]';
 
 
-        $(document).ready(function () {
-            var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7169/notificationHub").build();
+      toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": true,
+          "positionClass": "toast-top-right",
+          "preventDuplicates": false,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "5000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+      };
 
-            connection.start().then(function () {
-                console.log("Connection to notificationHub established.");
-            }).catch(function (err) {
-                return console.error(err.toString());
-            });
 
-            connection.on("ReceiveNotification", function (message) {
-                console.log("Notification received: " + message);
-                toastr.success("Nowe powiadomienie: " + message);
-            });
-        });
+      $(document).ready(function () {
+          var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7169/notificationHub").build();
+
+          connection.start().then(function () {
+              console.log("Connection to notificationHub established.");
+          }).catch(function (err) {
+              return console.error(err.toString());
+          });
+
+          connection.on("ReceiveNotification", function (data) {
+              if (data.userId === userEmail) {
+                  toastr.success("Nowe powiadomienie: " + data.message);
+              }
+          });
+      });
+
     </script>
 }

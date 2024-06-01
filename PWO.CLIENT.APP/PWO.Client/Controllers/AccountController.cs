@@ -51,10 +51,9 @@ namespace PWO.Client.Controllers
                 return RedirectToAction("Index", "Home");
                 //return true;
             }
-            catch (System.Exception ex)
+            catch (Exception)
             {
-
-                throw;
+                return RedirectToAction("Error", "Home");
             }
         }
 

@@ -39,12 +39,12 @@ namespace PWO.API.Endpoints
             {
                 var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                if (!(await db.ToDoLists.AnyAsync(x => x.Id == inputItem.ToDoListId && x.CreationUserId == userId)))
+                if (!(await db.ToDoLists.AnyAsync(x => x.Id == inputItem.ToDoListId)))
                 {
                     if (!(await db.ToDoListShares.AnyAsync(x => x.UserId == userId && x.ToDoListId == inputItem.ToDoListId)))
                     {
                         return Results.NotFound();
-                    }                      
+                    }
                 }
                 var toDoList = await db.ToDoLists.FirstOrDefaultAsync(x => x.Id == inputItem.ToDoListId);
                 var item = new ToDoListItem()
@@ -57,20 +57,20 @@ namespace PWO.API.Endpoints
 
                 var sharedUsers = await db.ToDoListShares
                                .Where(x => x.ToDoListId == inputItem.ToDoListId)
-                               .Select(x => x.UserId)
+                               .Select(x => x.Email)
                                .ToListAsync();
 
                 foreach (var sharedUserId in sharedUsers)
                 {
-                    if (sharedUserId != userId)
+                    var notification = new Notification
                     {
-                        var notification = new Notification
-                        {
-                            UserId = sharedUserId,
-                            Message = $"Nowy element {item.Name} został dodany do listy zadań {toDoList.Name}"
-                        };
-                        db.Notifications.Add(notification);
-                    }
+                        UserId = sharedUserId,
+                        Message = $"Nowy element {item.Name} został dodany do listy zadań {toDoList.Name}",
+                        CreatedAt = DateTime.Now,
+                        IsSent = false,
+                        IsRead = false
+                    };
+                    db.Notifications.Add(notification);
                 }
 
                 db.ToDoListItems.Add(item);
@@ -81,7 +81,7 @@ namespace PWO.API.Endpoints
             app.MapPut("/todolistitems/{id}", async (int id, ToDoListItemUpdateDto inputItem, AppDbContext db, HttpContext httpContext) =>
             {
                 var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var item = await db.ToDoListItems.FirstOrDefaultAsync(x => x.ToDoListId == id && x.CreationUserId == userId && x.Id == inputItem.Id);
+                var item = await db.ToDoListItems.FirstOrDefaultAsync(x => x.ToDoListId == id && x.Id == inputItem.Id);
 
                 if (item == null)
                 {
@@ -103,6 +103,24 @@ namespace PWO.API.Endpoints
                     {
                         item.CompletionTime = DateTime.Now;
                         item.CompletionUserId = userId;
+
+                        var sharedUsers = await db.ToDoListShares
+                            .Where(x => x.ToDoListId == id)
+                            .Select(x => x.Email)
+                            .ToListAsync();
+
+                        foreach (var sharedUserId in sharedUsers)
+                        {
+                            var notification = new Notification
+                            {
+                                UserId = sharedUserId,
+                                Message = $"Element {item.Name} został oznaczony jako ukończony.",
+                                CreatedAt = DateTime.Now,
+                                IsSent = false,
+                                IsRead = false
+                            };
+                            db.Notifications.Add(notification);
+                        }
                     }
                     else
                     {
@@ -119,7 +137,7 @@ namespace PWO.API.Endpoints
             app.MapDelete("/todolistitems/{id}", async (int id, AppDbContext db, HttpContext httpContext) =>
             {
                 var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (await db.ToDoListItems.FirstOrDefaultAsync(x => x.Id == id && x.CreationUserId == userId) is ToDoListItem item)
+                if (await db.ToDoListItems.FirstOrDefaultAsync(x => x.Id == id) is ToDoListItem item)
                 {
                     db.ToDoListItems.Remove(item);
                     await db.SaveChangesAsync();

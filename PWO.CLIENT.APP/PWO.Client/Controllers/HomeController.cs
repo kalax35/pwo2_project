@@ -10,15 +10,27 @@ namespace PWO.Client.Controllers
     {
         public ActionResult Index()
         {
-            var apiAccessToken = Session["ApiAccessToken"] as string;
-            if (!string.IsNullOrEmpty(apiAccessToken))
+            try
             {
-                return RedirectToAction("Index", "ToDoList");
+                var apiAccessToken = Session["ApiAccessToken"] as string;
+                if (!string.IsNullOrEmpty(apiAccessToken))
+                {
+                    return RedirectToAction("Index", "ToDoList");
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Account");
+                }
             }
-            else
+            catch (Exception)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Error", "Home");
             }
+        }
+
+        public ActionResult Error()
+        {
+            return View();
         }
     }
 }
